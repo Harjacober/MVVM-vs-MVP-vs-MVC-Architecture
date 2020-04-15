@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".MainActivity">
+    <data>
+        <variable
+            name="quizviewmodel"
+            type="com.example.mvvm_quizapp.viewmodel.QuizViewModel" />
+        <variable
+            name="currQuestion"
+            type="androidx.lifecycle.LiveData&lt;com.example.mvvm_quizapp.model.Question>" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="QUESTION"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_gravity="center"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{currQuestion.question ?? `No Questions yet`}"
+            android:textSize="18sp"
+            android:id="@+id/tv_question"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_gravity="start"/>
+        <Button
+            android:id="@+id/option_a"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:onClick="@{() -> quizviewmodel.answerQuestion(0)}"
+            android:text="@{currQuestion.options[0] ?? `Option A`}"
+            />
+        <Button
+            android:id="@+id/option_b"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:onClick="@{() -> quizviewmodel.answerQuestion(1)}"
+            android:text="@{currQuestion.options[1] ?? `Option B`}"
+            />
+        <Button
+            android:id="@+id/option_c"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:onClick="@{() -> quizviewmodel.answerQuestion(2)}"
+            android:text="@{currQuestion.options[2] ?? `Option C`}"
+            />
+        <Button
+            android:id="@+id/option_d"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:onClick="@{() -> quizviewmodel.answerQuestion(3)}"
+            android:text="@{currQuestion.options[3] ?? `Option D`}"
+            />
+    </LinearLayout>
+
+
+</layout>
