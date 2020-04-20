@@ -1,4 +1,4 @@
-package com.example.mvvm_quizapp
+package com.example.mvvm_quizapp.view
 
 import android.app.AlertDialog
 import android.content.Intent
@@ -8,10 +8,11 @@ import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import com.example.mvvm_quizapp.R
 import com.example.mvvm_quizapp.databinding.ActivityMainBinding
 import com.example.mvvm_quizapp.viewmodel.QuizViewModel
 
-class MainActivity : AppCompatActivity() {
+class TakeTestActivity : AppCompatActivity() {
 
     lateinit var quizViewModel: QuizViewModel
 
@@ -20,7 +21,9 @@ class MainActivity : AppCompatActivity() {
 
         quizViewModel = ViewModelProviders.of(this).get(QuizViewModel::class.java)
         quizViewModel.startGame()
-        val activityMainBinding: ActivityMainBinding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+        val activityMainBinding: ActivityMainBinding = DataBindingUtil.setContentView(this,
+            R.layout.activity_main
+        )
         activityMainBinding.lifecycleOwner = this
         activityMainBinding.quizviewmodel = quizViewModel
         activityMainBinding.currQuestion = quizViewModel.getNextQuestion()
@@ -40,13 +43,13 @@ class MainActivity : AppCompatActivity() {
         })
     }
     private fun endGame() {
-        quizViewModel.endGame().observe(this, Observer { score ->
+        quizViewModel.endGame().observe(this, Observer { user ->
             val builder = AlertDialog.Builder(this)
             builder.setTitle("Well done!")
-                .setMessage("Your score is $score")
+                .setMessage("Congrats ${user.fullName}, Your score is ${user.score}")
                 .setPositiveButton("RETAKE") { _, _ ->
                     // End the activity
-                    val intent = Intent(this, MainActivity::class.java)
+                    val intent = Intent(this, TakeTestActivity::class.java)
                     startActivity(intent)
                 }
                 .setCancelable(false)

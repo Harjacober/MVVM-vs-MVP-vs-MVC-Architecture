@@ -1,5 +1,9 @@
 package com.example.mvvm_quizapp.model
 
+class User (fullName: String){
+    var fullName = fullName
+    var score = 0
+}
 class Question (question: String, options: List<String>, answerIndex: Int){
     var question = question
     var options = options

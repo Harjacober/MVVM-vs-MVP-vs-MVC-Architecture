@@ -2,7 +2,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".MainActivity">
+    tools:context=".view.TakeTestActivity">
     <data>
         <variable
             name="quizviewmodel"
@@ -17,6 +17,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
         <TextView
+            android:id="@+id/tv_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="QUESTION"
@@ -45,6 +46,7 @@
             android:layout_gravity="center"
             android:onClick="@{() -> quizviewmodel.answerQuestion(0)}"
             android:text="@{currQuestion.options[0] ?? `Option A`}"
+            android:enabled="@{quizviewmodel.enableTouchEvent()}"
             />
         <Button
             android:id="@+id/option_b"
@@ -53,6 +55,7 @@
             android:layout_gravity="center"
             android:onClick="@{() -> quizviewmodel.answerQuestion(1)}"
             android:text="@{currQuestion.options[1] ?? `Option B`}"
+            android:enabled="@{quizviewmodel.enableTouchEvent()}"
             />
         <Button
             android:id="@+id/option_c"
@@ -61,6 +64,7 @@
             android:layout_gravity="center"
             android:onClick="@{() -> quizviewmodel.answerQuestion(2)}"
             android:text="@{currQuestion.options[2] ?? `Option C`}"
+            android:enabled="@{quizviewmodel.enableTouchEvent()}"
             />
         <Button
             android:id="@+id/option_d"
@@ -69,6 +73,7 @@
             android:layout_gravity="center"
             android:onClick="@{() -> quizviewmodel.answerQuestion(3)}"
             android:text="@{currQuestion.options[3] ?? `Option D`}"
+            android:enabled="@{quizviewmodel.enableTouchEvent()}"
             />
     </LinearLayout>
 

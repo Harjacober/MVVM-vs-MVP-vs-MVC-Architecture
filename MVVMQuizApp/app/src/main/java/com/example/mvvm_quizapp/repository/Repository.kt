@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.mvvm_quizapp.model.Question
 import com.example.mvvm_quizapp.model.QuestionStore
+import com.example.mvvm_quizapp.model.User
 import kotlin.properties.Delegates
 
 class Repository {
@@ -18,16 +19,22 @@ class Repository {
     }
 
     lateinit var questionStore: QuestionStore
+    lateinit var user: User
     var currentQuestion = MutableLiveData<Question>()
     var currScore by Delegates.notNull<Int>()
     var numberOfQuestion = 4
     var answerQuestionLiveData = MutableLiveData<List<Any>>()
-    var endGameLiveData = MutableLiveData<Int>()
+    var endGameLiveData = MutableLiveData<User>()
+    var mEnableTouchEvents = MutableLiveData<Boolean>()
 
+    fun saveUserInformation(name: String){
+        user = User(name)
+    }
     fun startGame(){
         questionStore = generateQuestions()
         currScore = 0
         currentQuestion.value = questionStore.getQuestion()
+        mEnableTouchEvents.value = true
     }
 
     fun answerQuestion(answerIndex: Int){
@@ -38,16 +45,12 @@ class Repository {
         }else{
             answerQuestionLiveData.value = listOf(false,currScore)
         }
-        if(numberOfQuestion==0){
-            endGameLiveData.value = currScore
-            resetGame()
-        }
-        currentQuestion.value = questionStore.getQuestion()
+        displayNextQuestion()
     }
     fun getVerdict(): LiveData<List<Any>>{
         return answerQuestionLiveData
     }
-    fun endGame(): LiveData<Int>{
+    fun endGame(): LiveData<User>{
         return endGameLiveData
     }
     fun getNextQuestion(): LiveData<Question>{
@@ -55,25 +58,27 @@ class Repository {
     }
     private fun resetGame(){
         questionStore = generateQuestions()
-        currentQuestion = MutableLiveData<Question>()
+        currentQuestion = MutableLiveData()
         currScore = 0
         numberOfQuestion = 4
-        answerQuestionLiveData = MutableLiveData<List<Any>>()
-        endGameLiveData = MutableLiveData<Int>()
+        answerQuestionLiveData = MutableLiveData()
+        endGameLiveData = MutableLiveData()
     }
 
-    /*fun displayQuestion(){
-        Handler().postDelayed(Runnable {
-            mEnableTouchEvents = true
+    fun displayNextQuestion(){
+        mEnableTouchEvents.value = false
+        Handler().postDelayed({
             // If this is the last question, ends the game.
             // Else, display the next question.
-            if (--numberOfQuestion === 0) { // End the game
-                endGame()
-            } else {
-                currentQuestion = questionStore.getQuestion()
+            if(numberOfQuestion==0){
+                user.score = currScore
+                endGameLiveData.value = user
+                resetGame()
             }
+            currentQuestion.value = questionStore.getQuestion()
+            mEnableTouchEvents.value = true
         }, 2000)
-    }*/
+    }
     private fun generateQuestions(): QuestionStore{
         val question1 = createQuestion(
             "What is the name of the current french president?",
